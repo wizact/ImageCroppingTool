@@ -1,0 +1,45 @@
+<html>
+  <head>
+	<title>Sample Image Load</title>
+    <style>
+  	  
+	  .fileDrop {
+		width: 300px;
+		height: 30px;
+		border: 3px gray dashed;
+		margin-top: 5px;
+		margin-right: 2px;
+		border-radius: 5px;
+		font-size: 25px;
+		color: gray;
+		padding-top: 10px;
+		padding-bottom: 10px; 
+		text-align: center;
+	  }
+    </style>
+  </head>
+  <body>
+  <input type="file" id="file1" /> <br>
+  <div id="drop_file1" class="fileDrop">
+	Drop the image here
+  </div>
+  <br>
+  <output id="list1"></output>
+  <hr>
+  <input type="file" id="file2" /> <br>
+  <div id="drop_file2" class="fileDrop">
+	Drop the image here
+  </div>
+  <br>
+  <output id="list2"></output>
+  
+    <script type="text/javascript" src="localFile.js"></script>
+	
+	<script>
+	if (imagePreview.supported()) {
+		imagePreview.register('file1', 'drop_file1', 'list1');
+		imagePreview.register('file2', 'drop_file2', 'list2');
+	}
+	</script>
+  </body>
+</html>
