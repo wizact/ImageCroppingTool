@@ -1,0 +1,29 @@
+{
+  "name": "htmllibs",
+  "version": "1.0.0",
+  "description": "Some HTML and JavaScript examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -a 0.0.0.0 -p 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wizact/htmllibs.git"
+  },
+  "keywords": [
+    "html",
+    "javascript"
+  ],
+  "author": "Amir Mohtasebi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wizact/htmllibs/issues"
+  },
+  "homepage": "https://github.com/wizact/htmllibs",
+  "devDependencies": {
+    "http-server": "^0.7.4",
+    "mocha": "latest",
+    "jshint": "latest"
+  }
+}
