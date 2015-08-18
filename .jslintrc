@@ -24,7 +24,8 @@
         "document",
         "FileReader",
         "console",
-        "window"
+        "window",
+        "module"
     ],
     "regexp": false,
     "rhino": false,
