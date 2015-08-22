@@ -1,10 +1,11 @@
 module.exports = function (grunt) {
     'use strict';
 
+
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-
+    grunt.loadNpmTasks('grunt-contrib-sass');
   
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -36,14 +37,25 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['File/*.js'],
+                files: ['File/*.js', 'assets/sass/*.scss'],
                 tasks: ['default']
+            }
+        },
+        sass: {                              
+            dist: {                           
+                files: [{
+                    expand: true,
+                    cwd: 'assets/sass',
+                    src: ['**/*.scss'],
+                    dest: 'assets/css',
+                    ext: '.css'
+                }]
             }
         }
     });
 
-    grunt.registerTask('default', ['jslint', 'jshint']);
-    
+    grunt.registerTask('default', ['jslint', 'jshint', 'sass']);
+     
     grunt.event.on('watch', function(action, filepath) {
         // grunt.log.write(action);
     });

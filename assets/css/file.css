@@ -1,0 +1,14 @@
+.fileDrop {
+  width: 300px;
+  height: 30px;
+  border: 3px gray dashed;
+  margin-top: 5px;
+  margin-right: 2px;
+  border-radius: 5px;
+  font-size: 25px;
+  color: gray;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center; }
+
+/*# sourceMappingURL=file.css.map */
