@@ -11,7 +11,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jslint: {
             client: {
-                src: ['File/*.js'],
+                src: ['assets/js/*.js'],
                 exclude: [],
                 directives: {
                     browser: true,
@@ -30,14 +30,14 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
-            files: ['File/*.js'],
+            files: ['assets/js/*.js'],
             options: {
                 jshintrc: true
             }
         },
         watch: {
             scripts: {
-                files: ['File/*.js', 'assets/sass/*.scss'],
+                files: ['assets/js/*.js', 'assets/sass/*.scss'],
                 tasks: ['default']
             }
         },
@@ -57,6 +57,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['jslint', 'jshint', 'sass']);
      
     grunt.event.on('watch', function(action, filepath) {
-        // grunt.log.write(action);
+        //grunt.log.write(filepath);
     });
 };

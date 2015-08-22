@@ -8,8 +8,8 @@ var imagePreview = (function () {
       if (item.fileElement === targetId) {
         previewElementId = item.previewElement;
       }
-    });
-
+    }); 
+ 
     return previewElementId;
   }
 
@@ -86,7 +86,7 @@ var imagePreview = (function () {
 
       loadFile(file, previewElementId);
     }
-
+    
     function handleDragOver(evt) {
       evt.stopPropagation();
       evt.preventDefault();
