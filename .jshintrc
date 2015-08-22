@@ -1,0 +1,14 @@
+{
+  "curly": true,
+  "eqnull": true,
+  "eqeqeq": true,
+  "undef": true,
+  "predef": [
+            "angular",
+            "$",
+            "document",
+            "FileReader",
+            "console",
+            "window",
+            "module"]
+}

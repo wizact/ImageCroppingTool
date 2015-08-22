@@ -1,8 +1,8 @@
 var imagePreview = (function () {
-  'use strict';
-  var elementCollection = [];
+    'use strict';
+    var elementCollection = [];
 
-  function getPreviewElementByFileTarget(targetId) {
+    function getPreviewElementByFileTarget(targetId) {
     var previewElementId = '';
     elementCollection.forEach(function (item) {
       if (item.fileElement === targetId) {
