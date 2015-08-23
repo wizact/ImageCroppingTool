@@ -100,7 +100,7 @@ var imagePreview = (function () {
       return false;
     }
 
-    function registerPreviewContainer(fileElement, dropElement, previewElement) {
+    function registerPreviewContainer(fileElement, dropElement, previewElement, options) {
       elementCollection.push({ "fileElement": fileElement, "dropElement": dropElement, "previewElement": previewElement});
       document.getElementById(fileElement).addEventListener('change', handleFileChange, false);
 
@@ -110,6 +110,18 @@ var imagePreview = (function () {
         dropZone.addEventListener('drop', handleDropFile, false);
       }
 
+      var width = "300px";
+      var height = "30px";
+
+      if (options !== undefined) {
+        width = options.width || width;
+        height = options.height || height;
+        console.log(width);
+        console.log(height);
+      }
+
+      document.getElementById(dropElement).style.width = width;
+      document.getElementById(dropElement).style.height = height;
     }
 
     return {
