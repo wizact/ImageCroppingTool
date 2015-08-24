@@ -6,6 +6,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-bower-task');
   
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -51,11 +52,21 @@ module.exports = function (grunt) {
                     ext: '.css'
                 }]
             }
+        },
+        bower: {
+            install: {
+                options: {
+                    targetDir: './assets/lib',
+                    install: true,
+                    cleanTargetDir: false,
+                    layout: 'byType'
+                }
+            }
         }
     });
 
-    grunt.registerTask('default', ['jslint', 'jshint', 'sass']);
-     
+    grunt.registerTask('default', ['jslint', 'jshint', 'sass', 'bower:install']);
+
     grunt.event.on('watch', function(action, filepath) {
         //grunt.log.write(filepath);
     });
