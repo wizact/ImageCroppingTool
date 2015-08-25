@@ -25,7 +25,8 @@ module.exports = function (grunt) {
                         "FileReader",
                         "console",
                         "window",
-                        "module"
+                        "module",
+                        "Image"
                     ]
                 }
             }

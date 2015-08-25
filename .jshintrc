@@ -10,5 +10,6 @@
             "FileReader",
             "console",
             "window",
-            "module"]
+            "module",
+            "Image"]
 }
