@@ -24,6 +24,29 @@ var imagePreview = (function () {
     return previewElementId;
   }
 
+  /**
+   * Add styling to the elements
+   * @param {string} fileElement
+   * @param {string} dropElement
+   * @param {object} options
+   */
+  var initializeElements = function(fileElement, dropElement, options) {
+      var width = "300px";
+      var height = "30px";
+
+      if (options !== undefined) {
+        width = options.width || width;
+        height = options.height || height;
+        console.log(width);
+        console.log(height);
+      }
+
+      document.getElementById(dropElement).style.width = width;
+      document.getElementById(dropElement).style.height = height;
+
+      document.getElementById(fileElement).style.width = width;
+  };
+
   function loadFile(file, previewElementId) {
     var previewContainer = document.getElementById(previewElementId),
     reader = new FileReader();
@@ -69,13 +92,11 @@ var imagePreview = (function () {
       evt.stopPropagation();
       evt.preventDefault();
 
-      var previewElementId = getDropElementByFileTarget(evt.target.id);
+      var previewElementId = getDropElementByFileTarget(evt.currentTarget.id);
 
       if (!previewElementId || previewElementId === "") {
         return;
       }
-
-      // var previewContainer = document.getElementById(previewElementId);
 
       if (evt.dataTransfer.files.length < 1) {
         console.log('no file has been selected');
@@ -106,22 +127,12 @@ var imagePreview = (function () {
 
       if (dropElement !== "") {
         var dropZone = document.getElementById(dropElement);
-        dropZone.addEventListener('dragover', handleDragOver, false);
-        dropZone.addEventListener('drop', handleDropFile, false);
+        dropZone.addEventListener('dragover', handleDragOver, true);
+        dropZone.addEventListener('drop', handleDropFile, true);
       }
-
-      var width = "300px";
-      var height = "30px";
-
-      if (options !== undefined) {
-        width = options.width || width;
-        height = options.height || height;
-        console.log(width);
-        console.log(height);
-      }
-
-      document.getElementById(dropElement).style.width = width;
-      document.getElementById(dropElement).style.height = height;
+      
+      // Init the stylong for elements
+      initializeElements(fileElement, dropElement, options);
     }
 
     return {
