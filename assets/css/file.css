@@ -1,18 +1,22 @@
 .dropArea .fileDrop {
   width: 300px;
   height: 30px;
-  border: 3px gray dashed;
-  margin-top: 5px;
-  margin-right: 2px;
+  border: 3px #696969 dashed;
+  margin: 5px 2px;
   border-radius: 5px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 10px 0px 10px 0px;
   text-align: center;
   display: table-cell;
   vertical-align: middle; }
   .dropArea .fileDrop .fileDropHint {
     display: inline-block;
     font-size: 25px;
-    color: gray; }
+    color: #696969; }
+.dropArea .fileBrowse {
+  margin: 0px 0px 5px;
+  border: 2px dashed #696969;
+  width: 480px;
+  border-radius: 5px;
+  padding: 1px; }
 
 /*# sourceMappingURL=file.css.map */
