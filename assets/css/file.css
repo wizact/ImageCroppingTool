@@ -8,10 +8,6 @@
   text-align: center;
   display: table-cell;
   vertical-align: middle; }
-  .dropArea .fileDrop .fileDropHint {
-    display: inline-block;
-    font-size: 25px;
-    color: #696969; }
 .dropArea .fileBrowse {
   margin: 0px 0px 5px;
   border: 2px dashed #696969;

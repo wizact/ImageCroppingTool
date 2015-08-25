@@ -9,25 +9,22 @@
       <input type="file" id="file1" class="fileBrowse" /> 
       <br>
       <div id="drop_file1" class="fileDrop">
-         <div class="fileDropHint">Drop the image here</div>
+         
      </div>
      <br>
-     <output id="list1"></output>
      <hr>
      <input type="file" id="file2" class="fileBrowse" /> 
      <br>
      <div id="drop_file2" class="fileDrop">
-         <div class="fileDropHint">Drop the image here</div>
      </div>
      <br>
-     <output id="list2"></output>
  </div>
  <script type="text/javascript" src="../assets/js/localFile.js"></script>
 
  <script>
    if (imagePreview.supported()) {
-      imagePreview.register('file1', 'drop_file1', 'list1', { "height": "200px", "width": "480px" });
-      imagePreview.register('file2', 'drop_file2', 'list2');
+      imagePreview.register('file1', 'drop_file1', { "height": "200px", "width": "480px" });
+      imagePreview.register('file2', 'drop_file2');
   }
 </script>
 </body>

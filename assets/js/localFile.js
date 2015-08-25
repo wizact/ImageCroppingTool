@@ -2,25 +2,14 @@ var imagePreview = (function () {
     'use strict';
     var elementCollection = [];
 
-    function getPreviewElementByFileTarget(targetId) {
+  function getcaptureIdByFileTarget(targetId) {
     var previewElementId = '';
     elementCollection.forEach(function (item) {
       if (item.fileElement === targetId) {
-        previewElementId = item.previewElement;
+        previewElementId = item.dropElement;
       }
     }); 
  
-    return previewElementId;
-  }
-
-  function getDropElementByFileTarget(targetId) {
-    var previewElementId = '';
-    elementCollection.forEach(function (item) {
-      if (item.dropElement === targetId) {
-        previewElementId = item.previewElement;
-      }
-    });
-
     return previewElementId;
   }
 
@@ -41,31 +30,38 @@ var imagePreview = (function () {
         console.log(height);
       }
 
-      document.getElementById(dropElement).style.width = width;
-      document.getElementById(dropElement).style.height = height;
+      var dropElementObj = document.getElementById(dropElement);
+      dropElementObj.style.width = width;
+      dropElementObj.style.height = height;
 
       document.getElementById(fileElement).style.width = width;
+
+      // create and add canvas to the drop zone
+      var editCanvas = document.createElement("canvas");
+      editCanvas.setAttribute("id", dropElement + "_canvas");
+      editCanvas.setAttribute("width", width);
+      editCanvas.setAttribute("height", height);
+      dropElementObj.insertBefore(editCanvas, null);
   };
 
-  function loadFile(file, previewElementId) {
-    var previewContainer = document.getElementById(previewElementId),
-    reader = new FileReader();
+  function loadFile(file, dropElementId) {
+    //var previewContainer = document.getElementById(previewElementId),
+    var reader = new FileReader();
 
     if (!file.type.match('image.*')) {
       throw "File type not supported";
-    }
+    } 
 
+    var ctx = document.getElementById(dropElementId + "_canvas").getContext('2d'); 
+ 
     reader.onload = (function () {
       return function (e) {
-        var previewItem = previewContainer.getElementsByTagName("span");
-        if (previewItem !== undefined &&
-          previewItem.length > 0) {
-            previewItem[0].remove();
-          }
+          var img = new Image();
+          img.onload = function() {
+            ctx.drawImage(img, 0 , 0);
+          };
 
-          previewItem = document.createElement('span');
-          previewItem.innerHTML = '<img src="' + e.target.result + '" /><br>';
-          previewContainer.insertBefore(previewItem, null);
+          img.src = e.target.result;
         };
       }(file));
 
@@ -73,30 +69,21 @@ var imagePreview = (function () {
     }
 
     function handleFileChange(evt) {
-
-      var previewElementId = getPreviewElementByFileTarget(evt.target.id);
-
-      if (!previewElementId || previewElementId === "") {
-        return;
-      }
-
+      var captureId = getcaptureIdByFileTarget(evt.target.id);
+      
       if (evt.target.files.length < 1) {
         return;
       }
 
       var file = evt.target.files[0];
-      loadFile(file, previewElementId);
+      loadFile(file, captureId);
     }
 
     function handleDropFile(evt) {
       evt.stopPropagation();
       evt.preventDefault();
 
-      var previewElementId = getDropElementByFileTarget(evt.currentTarget.id);
-
-      if (!previewElementId || previewElementId === "") {
-        return;
-      }
+      var captureId = evt.currentTarget.id;
 
       if (evt.dataTransfer.files.length < 1) {
         console.log('no file has been selected');
@@ -105,7 +92,7 @@ var imagePreview = (function () {
 
       var file = evt.dataTransfer.files[0];
 
-      loadFile(file, previewElementId);
+      loadFile(file, captureId);
     }
     
     function handleDragOver(evt) {
@@ -121,8 +108,8 @@ var imagePreview = (function () {
       return false;
     }
 
-    function registerPreviewContainer(fileElement, dropElement, previewElement, options) {
-      elementCollection.push({ "fileElement": fileElement, "dropElement": dropElement, "previewElement": previewElement});
+    function registerPreviewContainer(fileElement, dropElement, options) {
+      elementCollection.push({ "fileElement": fileElement, "dropElement": dropElement });
       document.getElementById(fileElement).addEventListener('change', handleFileChange, false);
 
       if (dropElement !== "") {

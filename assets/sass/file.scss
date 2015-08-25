@@ -12,12 +12,6 @@ $border-color: #696969;
         text-align: center;
         display: table-cell;
         vertical-align: middle;
-
-        .fileDropHint {
-            display: inline-block;
-            font-size: 25px;
-            color: $border-color;
-        }
     }
 
     .fileBrowse {
