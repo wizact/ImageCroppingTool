@@ -18,18 +18,31 @@
      <div id="drop_file2" class="fileDrop">
      </div>
      <br>
- </div>
- <script type="text/javascript" src="../assets/js/localFile.js"></script>
+  </div>
+ <script type="text/javascript" src="../assets/js/imagePreview.js"></script>
+ <script type="text/javascript" src="../assets/js/imageLoader.js"></script>
 
  <script>
- var preview1 = new ImagePreview('file1', 'drop_file1', { "height": "200", "width": "480" });
- var preview2 = new ImagePreview('file2', 'drop_file2');
-  if (preview1.isSupported()) {
-    preview1.registerPreviewContainer();
+
+  var preview1 = new ImagePreview('drop_file1', { "height": "200", "width": "480" });
+  var preview2 = new ImagePreview('drop_file2');
+
+  var loadcb1 = function(result) {
+    preview1.load(result);
+  };
+
+ var loadcb2 = function(result) {
+    preview2.load(result);
+ };
+
+ var loader1 = new ImageLoader('file1', 'drop_file1', loadcb1, { "height": "200", "width": "480" });
+ var loader2 = new ImageLoader('file2', 'drop_file2', loadcb2);
+  if (loader1.isSupported()) {
+    loader1.init();
   }
 
-  if (preview2.isSupported()) {
-    preview2.registerPreviewContainer();
+  if (loader2.isSupported()) {
+    loader2.init();
   }
 </script>
 </body>

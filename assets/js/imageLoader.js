@@ -1,5 +1,6 @@
-function ImagePreview(fileElement, dropElement, options) {
+function ImageLoader(fileElement, dropElement, loadcb, options) {
   'use strict';
+  this.cb = loadcb;
   this.width = 300;
   this.height = 30;
 
@@ -16,16 +17,9 @@ function ImagePreview(fileElement, dropElement, options) {
   dropElementObj.style.height = this.height + "px";
   
   document.getElementById(this.fileElement).style.width = this.width + "px";
-
-  // create and add canvas to the drop zone
-  var editCanvas = document.createElement("canvas");
-  editCanvas.setAttribute("id", this.dropElement + "_canvas");
-  editCanvas.setAttribute("width", this.width + "px");
-  editCanvas.setAttribute("height", this.height + "px");
-  dropElementObj.insertBefore(editCanvas, null);
 }
 
-ImagePreview.prototype.loadFile = function (file, dropElementId) {
+ImageLoader.prototype.loadFile = function (file) {
   'use strict';
   var reader = new FileReader();
 
@@ -33,67 +27,40 @@ ImagePreview.prototype.loadFile = function (file, dropElementId) {
     throw "File type not supported";
   } 
 
-  var ctx = document.getElementById(dropElementId + "_canvas").getContext('2d'); 
-
   reader.onload = (function () {
     return function (e) {
-        var img = new Image();
-        img.onload = function() {
-
-          var imgWidth = img.width,
-              imgHeight = img.height,
-              newWidth = this.width,
-              newHeight = this.height,
-              ratio = 1;
-
-          if (imgWidth > imgHeight) {
-            ratio = imgWidth / this.width;
-          }  else {
-            ratio = imgHeight / this.height;
-          }
-
-          newHeight = imgHeight / ratio;
-          newWidth = imgWidth / ratio;
-
-          console.log("%s => %s", imgWidth, newWidth);
-          console.log("%s => %s", imgHeight, newHeight);
-          console.log(ratio);
-
-          ctx.drawImage(img, 0 , 0, newWidth, newHeight);
-        }.bind(this);
-
-        img.src = e.target.result;
+        return this.cb(e.target.result);
       };
     }(file)).bind(this);
 
     reader.readAsDataURL(file);
 };
 
-ImagePreview.prototype.handleFileChange = function(evt) {
+ImageLoader.prototype.handleFileChange = function(evt) {
   'use strict';
-  var captureId = this.dropElement;
-  console.log(ImagePreview.prototype);
+  // var captureId = this.dropElement;
+  console.log(ImageLoader.prototype);
   if (evt.target.files.length < 1) {
     return;
   }
 
   var file = evt.target.files[0];
-  this.loadFile(file, captureId);
+  this.loadFile(file);
 };
 
-ImagePreview.prototype.handleDragOver = function(evt) {
+ImageLoader.prototype.handleDragOver = function(evt) {
   'use strict';
   evt.stopPropagation();
   evt.preventDefault();
   evt.dataTransfer.dropEffect = 'copy';
 };
 
-ImagePreview.prototype.handleDropFile = function(evt) {
+ImageLoader.prototype.handleDropFile = function(evt) {
   'use strict';
   evt.stopPropagation();
   evt.preventDefault();
 
-  var captureId = evt.currentTarget.id;
+  // var captureId = evt.currentTarget.id;
 
   if (evt.dataTransfer.files.length < 1) {
     console.log('no file has been selected');
@@ -102,10 +69,10 @@ ImagePreview.prototype.handleDropFile = function(evt) {
 
   var file = evt.dataTransfer.files[0];
 
-  this.loadFile(file, captureId);  
+  this.loadFile(file);  
 };
 
-ImagePreview.prototype.registerPreviewContainer = function() {
+ImageLoader.prototype.init = function() {
   'use strict';
   
   document.getElementById(this.fileElement).addEventListener('change', function(e) {
@@ -125,7 +92,7 @@ ImagePreview.prototype.registerPreviewContainer = function() {
   }
 };
 
-ImagePreview.prototype.isSupported = function() {
+ImageLoader.prototype.isSupported = function() {
   'use strict';
   if (window.File && window.FileReader && window.FileList && window.Blob) {
     return true;
