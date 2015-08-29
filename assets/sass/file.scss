@@ -12,6 +12,13 @@ $border-color: #696969;
         text-align: center;
         display: table-cell;
         vertical-align: middle;
+
+        overflow: hidden;
+
+        .imgToResize {
+            left: 0px;
+            top: 0px;
+        }
     }
 
     .fileBrowse {

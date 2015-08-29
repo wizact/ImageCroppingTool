@@ -2,7 +2,16 @@
 <html>
 <head>
 	<title>Sample Image Load</title>
-    <link rel="stylesheet" type="text/css" href="../assets/css/file.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/file.css">
+  <style>
+    #img1 {
+      position: absolute;
+    }
+
+    #drop_file1 {
+      position: relative;
+    }
+  </style>
 </head>
 <body>
   <div class="dropArea">
@@ -24,6 +33,9 @@
 
  <script>
 
+
+
+
   var preview1 = new ImagePreview('drop_file1', { "height": "200", "width": "480" });
   var preview2 = new ImagePreview('drop_file2');
 
@@ -44,6 +56,12 @@
   if (loader2.isSupported()) {
     loader2.init();
   }
+
+
+
+
+
+
 </script>
 </body>
 </html>
