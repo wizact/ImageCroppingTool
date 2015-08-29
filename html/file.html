@@ -4,13 +4,6 @@
 	<title>Sample Image Load</title>
   <link rel="stylesheet" type="text/css" href="../assets/css/file.css">
   <style>
-    #img1 {
-      position: absolute;
-    }
-
-    #drop_file1 {
-      position: relative;
-    }
   </style>
 </head>
 <body>
@@ -32,11 +25,7 @@
  <script type="text/javascript" src="../assets/js/imageLoader.js"></script>
 
  <script>
-
-
-
-
-  var preview1 = new ImagePreview('drop_file1', { "height": "200", "width": "480" });
+  var preview1 = new ImagePreview('drop_file1', { "width": "480" , "height": "200", "previewWidth": "240" , "previewHeight": "100"});
   var preview2 = new ImagePreview('drop_file2');
 
   var loadcb1 = function(result) {
@@ -56,12 +45,6 @@
   if (loader2.isSupported()) {
     loader2.init();
   }
-
-
-
-
-
-
 </script>
 </body>
 </html>

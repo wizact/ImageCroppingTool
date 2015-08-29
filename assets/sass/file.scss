@@ -9,6 +9,8 @@ $border-color: #696969;
         border-radius: 5px;
         padding-top: 10px 0px 10px 0px;
         
+        position: relative;
+
         text-align: center;
         display: table-cell;
         vertical-align: middle;
@@ -16,8 +18,8 @@ $border-color: #696969;
         overflow: hidden;
 
         .imgToResize {
-            left: 0px;
-            top: 0px;
+            cursor: move;
+            position: absolute;
         }
     }
 
