@@ -21,9 +21,6 @@ var handleMouseMove = function(e) {
 
         prevX = e.pageX;
         prevY = e.pageY;
-
-        console.log(deltaX, deltaY);
-        console.log(prevX, prevY);
     }
   };
 
