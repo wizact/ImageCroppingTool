@@ -67,14 +67,26 @@ var handleMouseDown = function(e) {
 
 ImagePreview.prototype.preparePreview = function() {
     'use strict';
+
+    // clearing previously creating resize elemnent
     var existingElement = document.getElementById(this.previewElement + '_resizeContainer');
     if (existingElement !== null) {
         existingElement.remove();
     }
 
+    // configuring the preview element
     var previewElementObj = document.getElementById(this.previewElement);
     previewElementObj.style.width = this.width + "px";
     previewElementObj.style.height = this.height + "px";
+};
+
+ImagePreview.prototype.createHandleBars = function(elementName, className) {
+    'use strict';
+    var handleBar = document.createElement('span');
+    handleBar.setAttribute('class', className);
+    handleBar.setAttribute('id', this.previewElement + "_" + elementName);
+
+    return handleBar;
 };
 
 ImagePreview.prototype.load = function(imageData) {
@@ -90,7 +102,7 @@ ImagePreview.prototype.load = function(imageData) {
     var resizeContainer = document.createElement("div");
     resizeContainer.setAttribute("id", this.previewElement + "_resizeContainer");
     resizeContainer.setAttribute("class", "containerToResize");
-    resizeContainer.setAttribute("draggable", "false");    
+    resizeContainer.setAttribute("draggable", "false"); 
 
     img.onload = function() {
         var imgWidth = img.width,
@@ -122,7 +134,14 @@ ImagePreview.prototype.load = function(imageData) {
         
         // ctx.drawImage(img, 0 , 0, newWidth, newHeight);
         document.getElementById(this.previewElement).insertBefore(resizeContainer, null);
-        document.getElementById(this.previewElement + '_resizeContainer').insertBefore(img, null);
+        
+        resizeContainer.insertBefore(img, null);
+        resizeContainer.insertBefore(this.createHandleBars('nw', 'resize-handle resize-handle-nw'), img);
+        resizeContainer.insertBefore(this.createHandleBars('ne', 'resize-handle resize-handle-ne'), img);
+        resizeContainer.insertBefore(this.createHandleBars('sw', 'resize-handle resize-handle-sw'), img);
+        resizeContainer.insertBefore(this.createHandleBars('se', 'resize-handle resize-handle-se'), img);
+    
+
         resizeContainer.addEventListener('mousedown', handleMouseDown, false);
     }.bind(this);
 
