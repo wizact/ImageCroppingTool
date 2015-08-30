@@ -1,11 +1,14 @@
 var imageDragState = false;
-var activeElementToMove = "";
+var imageResizeState = false;
+var activeElementToMove = '';
+var activeElementToResize = '';
 var prevX = 0, prevY = 0;
 var deltaX = 0, deltaY = 0;
 
 var handleMouseUp = function() {
     'use strict';
     imageDragState = false;
+    imageResizeState = false;
   };
 
 var handleMouseMove = function(e) {
@@ -21,6 +24,8 @@ var handleMouseMove = function(e) {
 
         prevX = e.pageX;
         prevY = e.pageY;
+    } else if (imageResizeState) {
+        console.log('resizing');
     }
   };
 
@@ -61,6 +66,16 @@ var handleMouseDown = function(e) {
     'use strict';
     imageDragState = true;
     activeElementToMove = e.currentTarget.id;
+    prevX = e.pageX;
+    prevY = e.pageY;
+};
+
+var handleResizeMouseDown = function(e) {
+    'use strict';
+    e.stopPropagation();
+    e.preventDefault();
+    imageResizeState = true;
+    activeElementToResize = e.currentTarget.id;
     prevX = e.pageX;
     prevY = e.pageY;
 };
@@ -136,13 +151,24 @@ ImagePreview.prototype.load = function(imageData) {
         document.getElementById(this.previewElement).insertBefore(resizeContainer, null);
         
         resizeContainer.insertBefore(img, null);
-        resizeContainer.insertBefore(this.createHandleBars('nw', 'resize-handle resize-handle-nw'), img);
-        resizeContainer.insertBefore(this.createHandleBars('ne', 'resize-handle resize-handle-ne'), img);
-        resizeContainer.insertBefore(this.createHandleBars('sw', 'resize-handle resize-handle-sw'), img);
-        resizeContainer.insertBefore(this.createHandleBars('se', 'resize-handle resize-handle-se'), img);
+        
+        var nwHandle = this.createHandleBars('nw', 'resize-handle resize-handle-nw');
+        var neHandle = this.createHandleBars('ne', 'resize-handle resize-handle-ne');
+        var swHandle = this.createHandleBars('sw', 'resize-handle resize-handle-sw');
+        var seHandle = this.createHandleBars('se', 'resize-handle resize-handle-se');
+
+        resizeContainer.insertBefore(nwHandle, img);
+        resizeContainer.insertBefore(neHandle, img);
+        resizeContainer.insertBefore(swHandle, img);
+        resizeContainer.insertBefore(seHandle, img);
     
 
         resizeContainer.addEventListener('mousedown', handleMouseDown, false);
+        
+        nwHandle.addEventListener('mousedown', handleResizeMouseDown, false);
+        neHandle.addEventListener('mousedown', handleResizeMouseDown, false);
+        swHandle.addEventListener('mousedown', handleResizeMouseDown, false);
+        seHandle.addEventListener('mousedown', handleResizeMouseDown, false);
     }.bind(this);
 
     img.src = imageData;
