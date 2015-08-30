@@ -39,7 +39,6 @@ ImageLoader.prototype.loadFile = function (file) {
 ImageLoader.prototype.handleFileChange = function(evt) {
   'use strict';
   // var captureId = this.dropElement;
-  console.log(ImageLoader.prototype);
   if (evt.target.files.length < 1) {
     return;
   }

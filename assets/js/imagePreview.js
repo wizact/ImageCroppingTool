@@ -71,12 +71,17 @@ var handleMouseDown = function(e) {
 
 ImagePreview.prototype.load = function(imageData) {
     'use strict';
-    //var ctx = document.getElementById(this.previewElement + "_canvas").getContext('2d'); 
+    // var ctx = document.getElementById(this.previewElement + "_canvas").getContext('2d'); 
 
     var img = new Image();
-    img.setAttribute("id", "img1");
+    img.setAttribute("id", this.previewElement + "_img");
     img.setAttribute("class", "imgToResize");
     img.setAttribute("draggable", "false");
+
+    var resizeContainer = document.createElement("div");
+    resizeContainer.setAttribute("id", this.previewElement + "_resizeContainer");
+    resizeContainer.setAttribute("class", "containerToResize");
+    resizeContainer.setAttribute("draggable", "false");    
 
     img.onload = function() {
         var imgWidth = img.width,
@@ -94,20 +99,22 @@ ImagePreview.prototype.load = function(imageData) {
         newHeight = imgHeight / ratio;
         newWidth = imgWidth / ratio;
 
+        img.setAttribute("width",  100 + "%");
+        img.setAttribute("height", 100 + "%");
+
         // default size of image after load
-        img.setAttribute("width",  newWidth + "px");
-        img.setAttribute("height", newHeight + "px");
+        resizeContainer.style.width = newWidth + "px";
+        resizeContainer.style.height = newHeight + "px";
 
         // Move the preview to the center of the drop zone
-        img.style.left = Math.floor((this.width / 2) - (newWidth /2)) + "px";
-        img.style.top = Math.floor((this.height / 2) - (newHeight /2)) + "px";
+        resizeContainer.style.left = Math.floor((this.width / 2) - (newWidth /2)) + "px";
+        resizeContainer.style.top = Math.floor((this.height / 2) - (newHeight /2)) + "px";
         
-        /*
-        ctx.drawImage(img, 0 , 0, newWidth, newHeight);
-        */
-        document.getElementById(this.previewElement).insertBefore(img, null);
-
-        img.addEventListener('mousedown', handleMouseDown, false);
+        
+        // ctx.drawImage(img, 0 , 0, newWidth, newHeight);
+        document.getElementById(this.previewElement).insertBefore(resizeContainer, null);
+        document.getElementById(this.previewElement + '_resizeContainer').insertBefore(img, null);
+        resizeContainer.addEventListener('mousedown', handleMouseDown, false);
     }.bind(this);
 
     img.src = imageData;

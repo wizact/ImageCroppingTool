@@ -11,8 +11,36 @@
   vertical-align: middle;
   overflow: hidden; }
   .dropArea .fileDrop .imgToResize {
+    cursor: move; }
+  .dropArea .fileDrop .containerToResize {
     cursor: move;
     position: absolute; }
+  .dropArea .fileDrop .resize-handle-ne,
+  .dropArea .fileDrop .resize-handle-se,
+  .dropArea .fileDrop .resize-handle-nw,
+  .dropArea .fileDrop .resize-handle-sw {
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: rgba(222, 60, 80, 0.9);
+    z-index: 999; }
+  .dropArea .fileDrop .resize-handle-nw {
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize; }
+  .dropArea .fileDrop .resize-handle-sw {
+    bottom: -5px;
+    left: -5px;
+    cursor: sw-resize; }
+  .dropArea .fileDrop .resize-handle-ne {
+    top: -5px;
+    right: -5px;
+    cursor: ne-resize; }
+  .dropArea .fileDrop .resize-handle-se {
+    bottom: -5px;
+    right: -5px;
+    cursor: se-resize; }
 .dropArea .fileBrowse {
   margin: 0px 0px 5px;
   border: 2px dashed #696969;
