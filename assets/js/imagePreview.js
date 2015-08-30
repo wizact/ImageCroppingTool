@@ -66,6 +66,7 @@ var handleMouseDown = function(e) {
 };
 
 ImagePreview.prototype.preparePreview = function() {
+    'use strict';
     var existingElement = document.getElementById(this.previewElement + '_resizeContainer');
     if (existingElement !== null) {
         existingElement.remove();
