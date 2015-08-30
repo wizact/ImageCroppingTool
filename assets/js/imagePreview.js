@@ -49,10 +49,6 @@ function ImagePreview(previewElement, options) {
 
     this.previewElement = previewElement;
 
-    var previewElementObj = document.getElementById(this.previewElement);
-    previewElementObj.style.width = this.width + "px";
-    previewElementObj.style.height = this.height + "px";
-
     // create and add canvas to the drop zone
     // var editCanvas = document.createElement("canvas");
     // editCanvas.setAttribute("id", this.previewElement + "_canvas");
@@ -69,10 +65,22 @@ var handleMouseDown = function(e) {
     prevY = e.pageY;
 };
 
+ImagePreview.prototype.preparePreview = function() {
+    var existingElement = document.getElementById(this.previewElement + '_resizeContainer');
+    if (existingElement !== null) {
+        existingElement.remove();
+    }
+
+    var previewElementObj = document.getElementById(this.previewElement);
+    previewElementObj.style.width = this.width + "px";
+    previewElementObj.style.height = this.height + "px";
+};
+
 ImagePreview.prototype.load = function(imageData) {
     'use strict';
     // var ctx = document.getElementById(this.previewElement + "_canvas").getContext('2d'); 
 
+    this.preparePreview();
     var img = new Image();
     img.setAttribute("id", this.previewElement + "_img");
     img.setAttribute("class", "imgToResize");
