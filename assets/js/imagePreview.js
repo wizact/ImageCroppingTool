@@ -1,9 +1,16 @@
 var imageDragState = false;
 var imageResizeState = false;
 var activeElementToMove = '';
-var activeElementToResize = '';
 var prevX = 0, prevY = 0;
 var deltaX = 0, deltaY = 0;
+
+var resizeState = {
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    activeElementToResize: ''
+};
 
 var handleMouseUp = function() {
     'use strict';
@@ -25,7 +32,17 @@ var handleMouseMove = function(e) {
         prevX = e.pageX;
         prevY = e.pageY;
     } else if (imageResizeState) {
-        console.log('resizing');
+        
+        var handleBar = e.target;
+        if (handleBar !== undefined && 
+            handleBar.classList !== undefined && 
+            handleBar.classList.contains('resize-handle')) {
+
+            if (handleBar.classList.contains('resize-handle-se')) {
+                console.log('Resize ' + resizeState.activeElementToResize);
+            }
+                
+        }
     }
   };
 
@@ -75,9 +92,15 @@ var handleResizeMouseDown = function(e) {
     e.stopPropagation();
     e.preventDefault();
     imageResizeState = true;
-    activeElementToResize = e.currentTarget.id;
     prevX = e.pageX;
     prevY = e.pageY;
+
+    var elToResize = e.target.parentElement;
+    resizeState.width = elToResize.offsetWidth;
+    resizeState.height = elToResize.offsetHeight;
+    resizeState.top = elToResize.offsetTop;
+    resizeState.left = elToResize.offsetLeft;
+    resizeState.activeElementToResize = elToResize.id;
 };
 
 ImagePreview.prototype.preparePreview = function() {
