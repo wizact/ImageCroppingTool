@@ -1,40 +1,53 @@
-var imageDragState = false;
-var imageResizeState = false;
-var activeElementToMove = '';
-var prevX = 0, prevY = 0;
-var deltaX = 0, deltaY = 0;
-
-var resizeState = {
-    type: '',
-    activeElementToResize: '',
-    width: 0, height: 0,
-    top: 0, left: 0,
+var moveState = {
+    imageMoveState: false,
+    activeElementToMove: '',
     prevX: 0, prevY: 0,
     deltaX: 0, deltaY: 0
 };
 
+var resizeState = {
+    imageResizeState: false,
+    type: '',
+    activeElementToResize: '',
+    prevX: 0, prevY: 0,
+    deltaX: 0, deltaY: 0
+};
+
+var isHandleBar = function(elementType) {
+    'use strict';
+    return  elementType === 'se' || 
+            elementType === 'ne' || 
+            elementType === 'nw' || 
+            elementType === 'sw';
+};
+
 var handleMouseUp = function() {
     'use strict';
-    imageDragState = false;
-    imageResizeState = false;
-  };
+    moveState.imageMoveState = false;
+    resizeState.imageResizeState = false;
+};
 
 var handleMouseMove = function(e) {
     'use strict';
 
-    if (imageDragState) {
-        deltaX = e.pageX - prevX;
-        deltaY = e.pageY - prevY;
+    if (moveState.imageMoveState) {
+        moveState.deltaX = e.pageX - moveState.prevX;
+        moveState.deltaY = e.pageY - moveState.prevY;
 
-        var panel = document.getElementById(activeElementToMove);
+        var panel = document.getElementById(moveState.activeElementToMove);
 
-        panel.style.left = panel.offsetLeft + deltaX + "px";
-        panel.style.top = panel.offsetTop + deltaY + "px";
+        panel.style.left = panel.offsetLeft + moveState.deltaX + "px";
+        panel.style.top = panel.offsetTop + moveState.deltaY + "px";
 
-        prevX = e.pageX;
-        prevY = e.pageY;
-    } else if (imageResizeState && resizeState.activeElementToResize !== '') {
+        moveState.prevX = e.pageX;
+        moveState.prevY = e.pageY;
+    } else if (resizeState.imageResizeState && resizeState.activeElementToResize !== '') {
         
+        if (isHandleBar(resizeState.type)) {
+            resizeState.deltaX = e.pageX - resizeState.prevX;
+            resizeState.deltaY = e.pageY - resizeState.prevY;
+        }
+
         var resizePanel = document.getElementById(resizeState.activeElementToResize);
         
         var computedWidth = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('width'), 10);
@@ -44,9 +57,6 @@ var handleMouseMove = function(e) {
 
         switch (resizeState.type) {
             case 'se':
-                resizeState.deltaX = e.pageX - resizeState.prevX;
-                resizeState.deltaY = e.pageY - resizeState.prevY;
-
                 resizePanel.style.width = computedWidth +  resizeState.deltaX + "px";
                 resizePanel.style.height = computedHeight + resizeState.deltaY + "px";
 
@@ -54,42 +64,27 @@ var handleMouseMove = function(e) {
                 resizeState.prevY = e.pageY;
             break;
             case 'ne':
-                resizeState.deltaX = e.pageX - resizeState.prevX;
-                resizeState.deltaY = e.pageY - resizeState.prevY;
-                
                 resizePanel.style.height = computedHeight - resizeState.deltaY + "px";
                 resizePanel.style.width = computedWidth +  resizeState.deltaX + "px";
                 resizePanel.style.top = computedTop + resizeState.deltaY + "px";
-
-                resizeState.prevX = e.pageX;
-                resizeState.prevY = e.pageY;
             break;
             case 'nw':
-                resizeState.deltaX = e.pageX - resizeState.prevX;
-                resizeState.deltaY = e.pageY - resizeState.prevY;
-
                 resizePanel.style.left = computedLeft + resizeState.deltaX + "px";
                 resizePanel.style.height = computedHeight - resizeState.deltaY + "px";
                 resizePanel.style.width = computedWidth -  resizeState.deltaX + "px";
                 resizePanel.style.top = computedTop + resizeState.deltaY + "px";
-
-                resizeState.prevX = e.pageX;
-                resizeState.prevY = e.pageY;
             break;
             case 'sw':
-                resizeState.deltaX = e.pageX - resizeState.prevX;
-                resizeState.deltaY = e.pageY - resizeState.prevY;
-
                 resizePanel.style.left = computedLeft + resizeState.deltaX + "px";
                 resizePanel.style.height = computedHeight + resizeState.deltaY + "px";
                 resizePanel.style.width = computedWidth -  resizeState.deltaX + "px";
-                
-                resizeState.prevX = e.pageX;
-                resizeState.prevY = e.pageY;
             break;
         } 
-                
-        
+
+        if (isHandleBar(resizeState.type)) {
+            resizeState.prevX = e.pageX;
+            resizeState.prevY = e.pageY;
+        }
     }
   };
 
@@ -128,23 +123,19 @@ function ImagePreview(previewElement, options) {
 
 var handleMoveMouseDown = function(e) {
     'use strict';
-    imageDragState = true;
-    activeElementToMove = e.currentTarget.id;
-    prevX = e.pageX;
-    prevY = e.pageY;
+    moveState.imageMoveState = true;
+    moveState.activeElementToMove = e.currentTarget.id;
+    moveState.prevX = e.pageX;
+    moveState.prevY = e.pageY;
 };
 
 var handleResizeMouseDown = function(e) {
     'use strict';
     e.stopPropagation();
     e.preventDefault();
-    imageResizeState = true;
+    resizeState.imageResizeState = true; 
     
     var handleTarget = e.target;
-    resizeState.width = handleTarget.offsetWidth;
-    resizeState.height = handleTarget.offsetHeight;
-    resizeState.top = handleTarget.offsetTop;
-    resizeState.left = handleTarget.offsetLeft;
     resizeState.prevX = e.pageX;
     resizeState.prevY = e.pageY;
     resizeState.activeElementToResize = handleTarget.parentElement.id;
