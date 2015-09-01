@@ -5,11 +5,12 @@ var prevX = 0, prevY = 0;
 var deltaX = 0, deltaY = 0;
 
 var resizeState = {
-    width: 0,
-    height: 0,
-    top: 0,
-    left: 0,
-    activeElementToResize: ''
+    type: '',
+    activeElementToResize: '',
+    width: 0, height: 0,
+    top: 0, left: 0,
+    prevX: 0, prevY: 0,
+    deltaX: 0, deltaY: 0
 };
 
 var handleMouseUp = function() {
@@ -20,6 +21,7 @@ var handleMouseUp = function() {
 
 var handleMouseMove = function(e) {
     'use strict';
+
     if (imageDragState) {
         deltaX = e.pageX - prevX;
         deltaY = e.pageY - prevY;
@@ -33,16 +35,24 @@ var handleMouseMove = function(e) {
         prevY = e.pageY;
     } else if (imageResizeState) {
         
-        var handleBar = e.target;
-        if (handleBar !== undefined && 
-            handleBar.classList !== undefined && 
-            handleBar.classList.contains('resize-handle')) {
+        if (resizeState.type === 'se') {
+            resizeState.deltaX = e.pageX - resizeState.prevX;
+            resizeState.deltaY = e.pageY - resizeState.prevY;
 
-            if (handleBar.classList.contains('resize-handle-se')) {
-                console.log('Resize ' + resizeState.activeElementToResize);
-            }
-                
+            var resizePanel = document.getElementById(resizeState.activeElementToResize);
+            
+            var computedWidth = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('width'), 10);
+            var computedHeight = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('height'), 10);
+
+
+            resizePanel.style.width = computedWidth +  resizeState.deltaX + "px";
+            resizePanel.style.height = computedHeight + resizeState.deltaY + "px";
+
+            resizeState.prevX = e.pageX;
+            resizeState.prevY = e.pageY;
         }
+                
+        
     }
   };
 
@@ -79,7 +89,7 @@ function ImagePreview(previewElement, options) {
     // previewElementObj.insertBefore(editCanvas, null);
 }
 
-var handleMouseDown = function(e) {
+var handleMoveMouseDown = function(e) {
     'use strict';
     imageDragState = true;
     activeElementToMove = e.currentTarget.id;
@@ -92,15 +102,19 @@ var handleResizeMouseDown = function(e) {
     e.stopPropagation();
     e.preventDefault();
     imageResizeState = true;
-    prevX = e.pageX;
-    prevY = e.pageY;
+    
+    var handleTarget = e.target;
+    resizeState.width = handleTarget.offsetWidth;
+    resizeState.height = handleTarget.offsetHeight;
+    resizeState.top = handleTarget.offsetTop;
+    resizeState.left = handleTarget.offsetLeft;
+    resizeState.prevX = e.pageX;
+    resizeState.prevY = e.pageY;
+    resizeState.activeElementToResize = handleTarget.parentElement.id;
+    
+    var handleBarElementNames = handleTarget.id.split('_');
 
-    var elToResize = e.target.parentElement;
-    resizeState.width = elToResize.offsetWidth;
-    resizeState.height = elToResize.offsetHeight;
-    resizeState.top = elToResize.offsetTop;
-    resizeState.left = elToResize.offsetLeft;
-    resizeState.activeElementToResize = elToResize.id;
+    resizeState.type = handleBarElementNames[handleBarElementNames.length > 0 ? handleBarElementNames.length - 1 : 0];
 };
 
 ImagePreview.prototype.preparePreview = function() {
@@ -186,7 +200,7 @@ ImagePreview.prototype.load = function(imageData) {
         resizeContainer.insertBefore(seHandle, img);
     
 
-        resizeContainer.addEventListener('mousedown', handleMouseDown, false);
+        resizeContainer.addEventListener('mousedown', handleMoveMouseDown, false);
         
         nwHandle.addEventListener('mousedown', handleResizeMouseDown, false);
         neHandle.addEventListener('mousedown', handleResizeMouseDown, false);
