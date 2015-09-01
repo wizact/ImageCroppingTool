@@ -1,3 +1,5 @@
+var canvasEventModule = (function() {
+'use strict';
 var moveState = {
     imageMoveState: false,
     activeElementToMove: '',
@@ -14,7 +16,6 @@ var resizeState = {
 };
 
 var isHandleBar = function(elementType) {
-    'use strict';
     return  elementType === 'se' || 
             elementType === 'ne' || 
             elementType === 'nw' || 
@@ -22,14 +23,12 @@ var isHandleBar = function(elementType) {
 };
 
 var handleMouseUp = function() {
-    'use strict';
     moveState.imageMoveState = false;
     resizeState.imageResizeState = false;
 };
 
 var handleMouseMove = function(e) {
-    'use strict';
-
+    
     if (moveState.imageMoveState) {
         moveState.deltaX = e.pageX - moveState.prevX;
         moveState.deltaY = e.pageY - moveState.prevY;
@@ -88,8 +87,17 @@ var handleMouseMove = function(e) {
     }
   };
 
-document.addEventListener('mousemove', handleMouseMove, false);
-document.addEventListener('mouseup', handleMouseUp, false);
+  return {
+    handleMouseUp: handleMouseUp,
+    handleMouseMove: handleMouseMove,
+    moveState: moveState,
+    resizeState: resizeState
+  };
+
+}());
+
+document.addEventListener('mousemove', canvasEventModule.handleMouseMove, false);
+document.addEventListener('mouseup', canvasEventModule.handleMouseUp, false);
 
 function ImagePreview(previewElement, options) {
     'use strict';
@@ -123,26 +131,26 @@ function ImagePreview(previewElement, options) {
 
 var handleMoveMouseDown = function(e) {
     'use strict';
-    moveState.imageMoveState = true;
-    moveState.activeElementToMove = e.currentTarget.id;
-    moveState.prevX = e.pageX;
-    moveState.prevY = e.pageY;
+    canvasEventModule.moveState.imageMoveState = true;
+    canvasEventModule.moveState.activeElementToMove = e.currentTarget.id;
+    canvasEventModule.moveState.prevX = e.pageX;
+    canvasEventModule.moveState.prevY = e.pageY;
 };
 
 var handleResizeMouseDown = function(e) {
     'use strict';
     e.stopPropagation();
     e.preventDefault();
-    resizeState.imageResizeState = true; 
     
     var handleTarget = e.target;
-    resizeState.prevX = e.pageX;
-    resizeState.prevY = e.pageY;
-    resizeState.activeElementToResize = handleTarget.parentElement.id;
+    canvasEventModule.resizeState.imageResizeState = true; 
+    canvasEventModule.resizeState.prevX = e.pageX;
+    canvasEventModule.resizeState.prevY = e.pageY;
+    canvasEventModule.resizeState.activeElementToResize = handleTarget.parentElement.id;
     
     var handleBarElementNames = handleTarget.id.split('_');
 
-    resizeState.type = handleBarElementNames[handleBarElementNames.length > 0 ? handleBarElementNames.length - 1 : 0];
+    canvasEventModule.resizeState.type = handleBarElementNames[handleBarElementNames.length > 0 ? handleBarElementNames.length - 1 : 0];
 };
 
 ImagePreview.prototype.preparePreview = function() {
