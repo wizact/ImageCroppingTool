@@ -33,24 +33,61 @@ var handleMouseMove = function(e) {
 
         prevX = e.pageX;
         prevY = e.pageY;
-    } else if (imageResizeState) {
+    } else if (imageResizeState && resizeState.activeElementToResize !== '') {
         
-        if (resizeState.type === 'se') {
-            resizeState.deltaX = e.pageX - resizeState.prevX;
-            resizeState.deltaY = e.pageY - resizeState.prevY;
+        var resizePanel = document.getElementById(resizeState.activeElementToResize);
+        
+        var computedWidth = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('width'), 10);
+        var computedHeight = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('height'), 10);
+        var computedTop = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('top'), 10);
+        var computedLeft = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('left'), 10);
 
-            var resizePanel = document.getElementById(resizeState.activeElementToResize);
-            
-            var computedWidth = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('width'), 10);
-            var computedHeight = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('height'), 10);
+        switch (resizeState.type) {
+            case 'se':
+                resizeState.deltaX = e.pageX - resizeState.prevX;
+                resizeState.deltaY = e.pageY - resizeState.prevY;
 
+                resizePanel.style.width = computedWidth +  resizeState.deltaX + "px";
+                resizePanel.style.height = computedHeight + resizeState.deltaY + "px";
 
-            resizePanel.style.width = computedWidth +  resizeState.deltaX + "px";
-            resizePanel.style.height = computedHeight + resizeState.deltaY + "px";
+                resizeState.prevX = e.pageX;
+                resizeState.prevY = e.pageY;
+            break;
+            case 'ne':
+                resizeState.deltaX = e.pageX - resizeState.prevX;
+                resizeState.deltaY = e.pageY - resizeState.prevY;
+                
+                resizePanel.style.height = computedHeight - resizeState.deltaY + "px";
+                resizePanel.style.width = computedWidth +  resizeState.deltaX + "px";
+                resizePanel.style.top = computedTop + resizeState.deltaY + "px";
 
-            resizeState.prevX = e.pageX;
-            resizeState.prevY = e.pageY;
-        }
+                resizeState.prevX = e.pageX;
+                resizeState.prevY = e.pageY;
+            break;
+            case 'nw':
+                resizeState.deltaX = e.pageX - resizeState.prevX;
+                resizeState.deltaY = e.pageY - resizeState.prevY;
+
+                resizePanel.style.left = computedLeft + resizeState.deltaX + "px";
+                resizePanel.style.height = computedHeight - resizeState.deltaY + "px";
+                resizePanel.style.width = computedWidth -  resizeState.deltaX + "px";
+                resizePanel.style.top = computedTop + resizeState.deltaY + "px";
+
+                resizeState.prevX = e.pageX;
+                resizeState.prevY = e.pageY;
+            break;
+            case 'sw':
+                resizeState.deltaX = e.pageX - resizeState.prevX;
+                resizeState.deltaY = e.pageY - resizeState.prevY;
+
+                resizePanel.style.left = computedLeft + resizeState.deltaX + "px";
+                resizePanel.style.height = computedHeight + resizeState.deltaY + "px";
+                resizePanel.style.width = computedWidth -  resizeState.deltaX + "px";
+                
+                resizeState.prevX = e.pageX;
+                resizeState.prevY = e.pageY;
+            break;
+        } 
                 
         
     }
