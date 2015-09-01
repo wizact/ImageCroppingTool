@@ -41,10 +41,19 @@ var handleMouseMove = function(e) {
         moveState.prevX = e.pageX;
         moveState.prevY = e.pageY;
     } else if (resizeState.imageResizeState && resizeState.activeElementToResize !== '') {
-        
         if (isHandleBar(resizeState.type)) {
             resizeState.deltaX = e.pageX - resizeState.prevX;
             resizeState.deltaY = e.pageY - resizeState.prevY;
+
+            if (e.shiftKey && 
+                (resizeState.type === "se" || resizeState.type === "nw")) {
+                resizeState.deltaX =  resizeState.deltaY;
+            }
+
+            if (e.shiftKey && 
+                (resizeState.type === "ne" || resizeState.type === "sw")) {
+                resizeState.deltaX = -1 * resizeState.deltaY;
+            }
         }
 
         var resizePanel = document.getElementById(resizeState.activeElementToResize);
