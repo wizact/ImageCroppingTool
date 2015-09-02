@@ -39,27 +39,31 @@ var handleMouseMove = function(e) {
         moveState.prevX = e.pageX;
         moveState.prevY = e.pageY;
     } else if (resizeState.imageResizeState && resizeState.activeElementToResize !== '') {
-        if (isHandleBar(resizeState.type)) {
-            resizeState.deltaX = e.pageX - resizeState.prevX;
-            resizeState.deltaY = e.pageY - resizeState.prevY;
-
-            if (e.shiftKey && 
-                (resizeState.type === "se" || resizeState.type === "nw")) {
-                resizeState.deltaX =  resizeState.deltaY;
-            }
-
-            if (e.shiftKey && 
-                (resizeState.type === "ne" || resizeState.type === "sw")) {
-                resizeState.deltaX = -1 * resizeState.deltaY;
-            }
-        }
-
+        
         var resizePanel = document.getElementById(resizeState.activeElementToResize);
         
         var computedWidth = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('width'), 10);
         var computedHeight = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('height'), 10);
         var computedTop = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('top'), 10);
         var computedLeft = parseInt(window.getComputedStyle(resizePanel, null).getPropertyValue('left'), 10);
+
+        if (isHandleBar(resizeState.type)) {
+
+            var scaledRatio = computedWidth / computedHeight;
+
+            resizeState.deltaX = e.pageX - resizeState.prevX;
+            resizeState.deltaY = e.pageY - resizeState.prevY;
+
+            if (e.shiftKey && 
+                (resizeState.type === "se" || resizeState.type === "nw")) {
+                resizeState.deltaX = scaledRatio * resizeState.deltaY;
+            }
+
+            if (e.shiftKey && 
+                (resizeState.type === "ne" || resizeState.type === "sw")) {
+                resizeState.deltaX = -1 * scaledRatio * resizeState.deltaY;
+            }
+        }
 
         switch (resizeState.type) {
             case 'se':
