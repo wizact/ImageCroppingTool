@@ -16,10 +16,8 @@ var resizeState = {
 };
 
 var isHandleBar = function(elementType) {
-    return  elementType === 'se' || 
-            elementType === 'ne' || 
-            elementType === 'nw' || 
-            elementType === 'sw';
+    return  elementType === 'se' || elementType === 'ne' || 
+            elementType === 'nw' || elementType === 'sw';
 };
 
 var handleMouseUp = function() {
