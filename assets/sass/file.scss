@@ -64,6 +64,15 @@ $resize-border-color: rgba(222,60,80,.9);
             right: -5px;
             cursor: nwse-resize;
         }
+
+        .viewFinder {
+            border: 1px $resize-border-color solid;
+            z-index: 99;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            pointer-events: none;
+        }
     }
 
     .fileBrowse {

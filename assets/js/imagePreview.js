@@ -112,17 +112,20 @@ document.addEventListener('mouseup', canvasEventModule.handleMouseUp, false);
 
 function ImagePreview(previewElement, options) {
     'use strict';
-    // Drop zone size
-    this.width = 300;
-    this.height = 30;
+    // Drop zone size & Preview image size
+    this.width = this.previewWidth = 300;
+    this.height = this.previewHeight = 30;
 
-    // Preview image size
-    this.previewWidth = 300;
-    this.previewHeight = 30;
+    // set default view finder size
+    this.viewFinderWidth = this.width / 2;
+    this.viewFinderHeight = this.height / 2;
 
     if (options !== undefined) {
         this.width = options.width || this.width;
         this.height = options.height || this.height;
+
+        this.viewFinderWidth = options.viewFinderWidth || this.width / 2;
+        this.viewFinderHeight = options.viewFinderHeight || this.height / 2;
     }
 
     if (options !== undefined) {
@@ -188,10 +191,26 @@ ImagePreview.prototype.createHandleBars = function(elementName, className) {
     return handleBar;
 };
 
+ImagePreview.prototype.prepareViewFinder = function() {
+    'use strict';
+    var viewFinderElement = document.createElement("div");
+    viewFinderElement.setAttribute("id", this.previewElement + "_viewFinder");
+    viewFinderElement.setAttribute("class", "viewFinder");
+    viewFinderElement.setAttribute("draggable", "false"); 
+
+    viewFinderElement.style.width = this.viewFinderWidth + 'px';
+    viewFinderElement.style.height = this.viewFinderHeight + 'px';
+
+    viewFinderElement.style.left = Math.floor((this.width / 2) - (this.viewFinderWidth /2)) + "px";
+    viewFinderElement.style.top = Math.floor((this.height / 2) - (this.viewFinderHeight /2)) + "px";
+
+    document.getElementById(this.previewElement).insertBefore(viewFinderElement, null);
+};
+
 ImagePreview.prototype.load = function(imageData) {
     'use strict';
     // var ctx = document.getElementById(this.previewElement + "_canvas").getContext('2d'); 
-
+    this.prepareViewFinder();
     this.preparePreview();
     var img = new Image();
     img.setAttribute("id", this.previewElement + "_img");

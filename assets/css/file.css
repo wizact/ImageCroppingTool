@@ -41,6 +41,13 @@
     bottom: -5px;
     right: -5px;
     cursor: nwse-resize; }
+  .dropArea .fileDrop .viewFinder {
+    border: 1px rgba(222, 60, 80, 0.9) solid;
+    z-index: 99;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    pointer-events: none; }
 .dropArea .fileBrowse {
   margin: 0px 0px 5px;
   border: 2px dashed #696969;
