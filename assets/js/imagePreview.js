@@ -126,11 +126,12 @@ function ImagePreview(previewElement, options) {
 
         this.viewFinderWidth = options.viewFinderWidth || this.width / 2;
         this.viewFinderHeight = options.viewFinderHeight || this.height / 2;
-    }
 
-    if (options !== undefined) {
         this.previewWidth = options.previewWidth || this.previewWidth;
         this.previewHeight = options.previewHeight || this.previewHeight;
+    } else {
+        this.viewFinderWidth = this.width / 2;
+        this.viewFinderHeight = this.height / 2;
     }
 
     this.previewElement = previewElement;
