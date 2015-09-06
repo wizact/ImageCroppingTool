@@ -144,7 +144,7 @@ function ImagePreview(previewElement, options) {
     // previewElementObj.insertBefore(editCanvas, null);
 }
 
-var handleMoveMouseDown = function(e) {
+ImagePreview.prototype.handleMoveMouseDown = function(e) {
     'use strict';
     canvasEventModule.moveState.imageMoveState = true;
     canvasEventModule.moveState.activeElementToMove = e.currentTarget.id;
@@ -152,7 +152,7 @@ var handleMoveMouseDown = function(e) {
     canvasEventModule.moveState.prevY = e.pageY;
 };
 
-var handleResizeMouseDown = function(e) {
+ImagePreview.prototype.handleResizeMouseDown = function(e) {
     'use strict';
     e.stopPropagation();
     e.preventDefault();
@@ -267,13 +267,44 @@ ImagePreview.prototype.load = function(imageData) {
         resizeContainer.insertBefore(seHandle, img);
     
 
-        resizeContainer.addEventListener('mousedown', handleMoveMouseDown, false);
+        resizeContainer.addEventListener('mousedown', this.handleMoveMouseDown, false);
         
-        nwHandle.addEventListener('mousedown', handleResizeMouseDown, false);
-        neHandle.addEventListener('mousedown', handleResizeMouseDown, false);
-        swHandle.addEventListener('mousedown', handleResizeMouseDown, false);
-        seHandle.addEventListener('mousedown', handleResizeMouseDown, false);
+        nwHandle.addEventListener('mousedown', this.handleResizeMouseDown, false);
+        neHandle.addEventListener('mousedown', this.handleResizeMouseDown, false);
+        swHandle.addEventListener('mousedown', this.handleResizeMouseDown, false);
+        seHandle.addEventListener('mousedown', this.handleResizeMouseDown, false);
     }.bind(this);
 
     img.src = imageData;
 };
+
+ImagePreview.prototype.findImagePositionType = function(x_image_1, x_image_2, y_image_1, y_image_2, x_view_1, x_view_2, y_view_1, y_view_2) {
+    'use strict';
+
+    if (x_image_1 <= x_view_1 && x_image_2 <= x_view_2 && y_image_1 <= y_view_1 && y_image_2 <= y_view_2) { return 1; }
+    if (x_image_1 <= x_view_1 && x_image_2 <= x_view_2 && y_image_1 <= y_view_1 && y_image_2 > y_view_2)  { return 2; }
+    if (x_image_1 <= x_view_1 && x_image_2 <= x_view_2 && y_image_1 > y_view_1 && y_image_2 <= y_view_2)  { return 3; }
+    if (x_image_1 <= x_view_1 && x_image_2 <= x_view_2 && y_image_1 > y_view_1 && y_image_2 > y_view_2)  { return 4; }
+
+    if (x_image_1 <= x_view_1 && x_image_2 > x_view_2 && y_image_1 <= y_view_1 && y_image_2 <= y_view_2) { return 5; }
+    if (x_image_1 <= x_view_1 && x_image_2 > x_view_2 && y_image_1 <= y_view_1 && y_image_2 > y_view_2)  { return 6; }
+    if (x_image_1 <= x_view_1 && x_image_2 > x_view_2 && y_image_1 > y_view_1 && y_image_2 <= y_view_2)  { return 7; }
+    if (x_image_1 <= x_view_1 && x_image_2 > x_view_2 && y_image_1 > y_view_1 && y_image_2 > y_view_2)  { return 8; }
+
+    if (x_image_1 > x_view_1 && x_image_2 <= x_view_2 && y_image_1 <= y_view_1 && y_image_2 <= y_view_2) { return 9; }
+    if (x_image_1 > x_view_1 && x_image_2 <= x_view_2 && y_image_1 <= y_view_1 && y_image_2 > y_view_2) { return 10; }
+    if (x_image_1 > x_view_1 && x_image_2 <= x_view_2 && y_image_1 > y_view_1 && y_image_2 <= y_view_2) { return 11; }
+    if (x_image_1 > x_view_1 && x_image_2 <= x_view_2 && y_image_1 > y_view_1 && y_image_2 > y_view_2) { return 12; }
+
+    if (x_image_1 > x_view_1 && x_image_2 > x_view_2 && y_image_1 <= y_view_1 && y_image_2 <= y_view_2) { return 13; }
+    if (x_image_1 > x_view_1 && x_image_2 > x_view_2 && y_image_1 <= y_view_1 && y_image_2 > y_view_2) { return 14; }
+    if (x_image_1 > x_view_1 && x_image_2 > x_view_2 && y_image_1 > y_view_1 && y_image_2 <= y_view_2) { return 15; }
+    if (x_image_1 > x_view_1 && x_image_2 > x_view_2 && y_image_1 > y_view_1 && y_image_2 > y_view_2) { return 16; }
+};
+
+
+
+
+
+
+
