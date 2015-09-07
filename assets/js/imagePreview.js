@@ -302,9 +302,55 @@ ImagePreview.prototype.findImagePositionType = function(x_image_1, x_image_2, y_
     if (x_image_1 > x_view_1 && x_image_2 > x_view_2 && y_image_1 > y_view_1 && y_image_2 > y_view_2) { return 16; }
 };
 
+ImagePreview.prototype.findImageCoordinates = function() {
+    'use strict';
+    var existingElement = document.getElementById(this.previewElement + '_resizeContainer');
+    var imagePositionTop = parseInt(existingElement.style.top, 10);
+    var imagePositionLeft = parseInt(existingElement.style.left, 10);
+    var imagePositionWidth = parseInt(existingElement.style.width, 10);
+    var imagePositionHeight = parseInt(existingElement.style.height, 10);
 
+    return {
+        x_image_1: imagePositionLeft,
+        y_image_1: imagePositionTop,
+        x_image_2: imagePositionLeft + imagePositionWidth,        
+        y_image_2: imagePositionTop + imagePositionHeight
+    };
+};
 
+ImagePreview.prototype.findViewFinderCoordinates = function() {
+    'use strict';
+    var viewFinderElement = document.getElementById(this.previewElement + "_viewFinder");
+    var viewFinderPositionTop = parseInt(viewFinderElement.style.top, 10);
+    var viewFinderPositionLeft = parseInt(viewFinderElement.style.left, 10);
+    var viewFinderPositionWidth = parseInt(viewFinderElement.style.width, 10);
+    var viewFinderPositionHeight = parseInt(viewFinderElement.style.height, 10);
 
+    return {
+        x_view_1: viewFinderPositionLeft,
+        y_view_1: viewFinderPositionTop,
+        x_view_2: viewFinderPositionLeft + viewFinderPositionWidth,
+        y_view_2: viewFinderPositionTop + viewFinderPositionHeight
+    };
+};
+
+/*
+ * Separating Axis Test
+ * Two objects don't intersect if you can find a line that separates the two objects. 
+ * e.g. the objects / all points of an object are on different sides of the line.
+ * http://stackoverflow.com/a/115520/400011
+ */
+ImagePreview.prototype.viewFinderIntersectImage = function() {
+    'use strict';
+    var ic = this.findImageCoordinates();
+    var vc = this.findViewFinderCoordinates();
+  
+    if (ic.x_image_2 < vc.x_view_1 || vc.x_view_2 < ic.x_image_1 || ic.y_image_2 < vc.y_view_1 || vc.y_view_2 < ic.y_image_1) {
+        return false;
+    } 
+    
+  return true;
+};
 
 
 
