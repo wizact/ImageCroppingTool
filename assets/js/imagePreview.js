@@ -311,10 +311,10 @@ ImagePreview.prototype.findImageCoordinates = function() {
     var imagePositionHeight = parseInt(existingElement.style.height, 10);
 
     return {
-        x_image_1: imagePositionLeft,
-        y_image_1: imagePositionTop,
-        x_image_2: imagePositionLeft + imagePositionWidth,        
-        y_image_2: imagePositionTop + imagePositionHeight
+        x_image_1: imagePositionLeft, // x11
+        y_image_1: imagePositionTop, //y11
+        x_image_2: imagePositionLeft + imagePositionWidth, //x12        
+        y_image_2: imagePositionTop + imagePositionHeight //y12
     };
 };
 
@@ -327,20 +327,21 @@ ImagePreview.prototype.findViewFinderCoordinates = function() {
     var viewFinderPositionHeight = parseInt(viewFinderElement.style.height, 10);
 
     return {
-        x_view_1: viewFinderPositionLeft,
-        y_view_1: viewFinderPositionTop,
-        x_view_2: viewFinderPositionLeft + viewFinderPositionWidth,
-        y_view_2: viewFinderPositionTop + viewFinderPositionHeight
+        x_view_1: viewFinderPositionLeft, //x21
+        y_view_1: viewFinderPositionTop, //y21
+        x_view_2: viewFinderPositionLeft + viewFinderPositionWidth, //x22
+        y_view_2: viewFinderPositionTop + viewFinderPositionHeight  //y22
     };
 };
 
 /*
+ * Checks whether view finder and image preview squares intersections are empty or not. 
  * Separating Axis Test
  * Two objects don't intersect if you can find a line that separates the two objects. 
  * e.g. the objects / all points of an object are on different sides of the line.
  * http://stackoverflow.com/a/115520/400011
  */
-ImagePreview.prototype.viewFinderIntersectImage = function() {
+ImagePreview.prototype.viewFinderAndImageIntersect = function() {
     'use strict';
     var ic = this.findImageCoordinates();
     var vc = this.findViewFinderCoordinates();
@@ -350,6 +351,25 @@ ImagePreview.prototype.viewFinderIntersectImage = function() {
     } 
     
   return true;
+};
+
+/*
+ * Calculates the shared area of intersection between view finder and image preview squares
+ * http://math.stackexchange.com/a/99576
+ */
+ImagePreview.prototype.viewFinderAndImageIntersectionArea = function() {
+    'use strict';
+    var ic = this.findImageCoordinates();
+    var vc = this.findViewFinderCoordinates();
+
+    var x_overlap = Math.max(0, Math.min(ic.x_image_2 ,vc.x_view_2) - Math.max(ic.x_image_1, vc.x_view_1));
+    var y_overlap = Math.max(0, Math.min(ic.y_image_2, vc.y_view_2) - Math.max(ic.y_image_1, vc.y_view_1));
+
+    return {
+        "x_overlap": x_overlap,
+        "y_overlap": y_overlap,
+        "area": x_overlap * y_overlap
+    };
 };
 
 
