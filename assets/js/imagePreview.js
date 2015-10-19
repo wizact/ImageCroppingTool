@@ -113,7 +113,7 @@ document.addEventListener('mouseup', canvasEventModule.handleMouseUp, false);
 var ImagePreview = (function() {
     'use strict';
 
-    function ImagePreview(previewElement, options) {
+    function ImagePreview(previewElement, cropButtonId, backgroundPickerId, options) {
         // Drop zone size & Preview image size
         this.width = this.previewWidth = 300;
         this.height = this.previewHeight = 30;
@@ -137,13 +137,17 @@ var ImagePreview = (function() {
         }
     
         this.previewElement = previewElement;
+        this.cropButtonId = cropButtonId;
+        this.backgroundPickerId = backgroundPickerId;
     
         // create and add canvas to the drop zone
-        // var editCanvas = document.createElement("canvas");
-        // editCanvas.setAttribute("id", this.previewElement + "_canvas");
-        // editCanvas.setAttribute("width", this.width + "px");
-        // editCanvas.setAttribute("height", this.height + "px");
-        // previewElementObj.insertBefore(editCanvas, null);
+        var editCanvas = document.createElement("canvas");
+        editCanvas.setAttribute("id", this.previewElement + "_canvas");
+        editCanvas.setAttribute("width", this.viewFinderWidth + "px");
+        editCanvas.setAttribute("height", this.viewFinderHeight + "px");
+        editCanvas.setAttribute("style", "display:none;");
+        var scriptTag = document.getElementsByTagName("body")[0];
+        scriptTag.insertBefore(editCanvas, null);
     }
     
     ImagePreview.prototype.handleMoveMouseDown = function(e) {
@@ -182,7 +186,6 @@ var ImagePreview = (function() {
     };
     
     ImagePreview.prototype.createHandleBars = function(elementName, className) {
-        //'use strict';
         var handleBar = document.createElement('span');
         handleBar.setAttribute('class', className);
         handleBar.setAttribute('id', this.previewElement + "_" + elementName);
@@ -272,6 +275,11 @@ var ImagePreview = (function() {
         }.bind(this);
     
         img.src = imageData;
+
+        var cropBtn = document.getElementById(this.cropButtonId);
+        cropBtn.addEventListener('click', function() { 
+            return this.cropImage(); 
+        }.bind(this) , false);
     };
     
     ImagePreview.prototype.findImagePositionType = function(x_image_1, x_image_2, y_image_1, y_image_2, x_view_1, x_view_2, y_view_1, y_view_2) {    
@@ -307,7 +315,9 @@ var ImagePreview = (function() {
             x_image_1: imagePositionLeft, // x11
             y_image_1: imagePositionTop, //y11
             x_image_2: imagePositionLeft + imagePositionWidth, //x12        
-            y_image_2: imagePositionTop + imagePositionHeight //y12
+            y_image_2: imagePositionTop + imagePositionHeight, //y12
+            width: imagePositionWidth,
+            height: imagePositionHeight
         };
     };
     
@@ -319,10 +329,12 @@ var ImagePreview = (function() {
         var viewFinderPositionHeight = parseInt(viewFinderElement.style.height, 10);
     
         return {
-            x_view_1: viewFinderPositionLeft, //x21
-            y_view_1: viewFinderPositionTop, //y21
-            x_view_2: viewFinderPositionLeft + viewFinderPositionWidth, //x22
-            y_view_2: viewFinderPositionTop + viewFinderPositionHeight  //y22
+            x_view_1: viewFinderPositionLeft, 
+            y_view_1: viewFinderPositionTop, 
+            x_view_2: viewFinderPositionLeft + viewFinderPositionWidth, 
+            y_view_2: viewFinderPositionTop + viewFinderPositionHeight,
+            width: viewFinderPositionWidth,
+            height: viewFinderPositionHeight
         };
     };
     
@@ -354,12 +366,40 @@ var ImagePreview = (function() {
     
         var x_overlap = Math.max(0, Math.min(ic.x_image_2 ,vc.x_view_2) - Math.max(ic.x_image_1, vc.x_view_1));
         var y_overlap = Math.max(0, Math.min(ic.y_image_2, vc.y_view_2) - Math.max(ic.y_image_1, vc.y_view_1));
-    
+        
         return {
             "x_overlap": x_overlap,
             "y_overlap": y_overlap,
             "area": x_overlap * y_overlap
         };
+    };
+
+    ImagePreview.prototype.cropImage = function() {
+        var ic = this.findImageCoordinates();
+        var vc = this.findViewFinderCoordinates();
+
+        var imageToDraw = document.getElementById(this.previewElement + "_img");
+        
+        var canvas = document.getElementById(this.previewElement + "_canvas");
+        var context = canvas.getContext('2d');
+
+        // clear the canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        var dx = ic.x_image_1 - vc.x_view_1;
+        var dy = ic.y_image_1 - vc.y_view_1;
+
+        // background color
+        var colorPicker = document.getElementById(this.backgroundPickerId);
+        if (colorPicker) {      
+            context.rect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = colorPicker.value;
+            context.fill();
+        }
+
+        context.drawImage(imageToDraw, dx, dy, ic.width, ic.height);
+        var dataURL = canvas.toDataURL();
+        window.open(dataURL);
     };
     
     return ImagePreview;

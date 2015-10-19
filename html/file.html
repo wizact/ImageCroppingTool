@@ -16,39 +16,28 @@
         
      </div>
      <br> 
-     <hr>
-     <input type="file" id="file2" class="fileBrowse" /> 
-     <br>
-     <div id="drop_file2" class="fileDrop">
-     </div>
-     <br>
   </div>
+  <button id="drawOnCanvas" class="btn">Crop</button>
+  Background Color: <input id="background-color" type="color" />
+  <hr />
 <!-- build:js:build assets/js/imagebundle.min.js -->
  <script type="text/javascript" src="../assets/js/imagePreview.js"></script>
  <script type="text/javascript" src="../assets/js/imageLoader.js"></script>
 <!-- /build -->
 
  <script>
-  var preview1 = new ImagePreview('drop_file1', { "width": "480" , "height": "200", "previewWidth": "240" , "previewHeight": "100", "viewFinderWidth": "200", "viewFinderHeight": "100" });
-  var preview2 = new ImagePreview('drop_file2');
+  var preview1 = new ImagePreview('drop_file1', 'drawOnCanvas', 'background-color', { "width": "480" , "height": "200", "previewWidth": "240" , "previewHeight": "100", "viewFinderWidth": "200", "viewFinderHeight": "100" });
 
   var loadcb1 = function(result) {
     preview1.load(result);
   };
 
- var loadcb2 = function(result) {
-    preview2.load(result);
- };
-
  var loader1 = new ImageLoader('file1', 'drop_file1', loadcb1, { "height": "200", "width": "480" });
- var loader2 = new ImageLoader('file2', 'drop_file2', loadcb2);
+
   if (loader1.isSupported()) {
     loader1.init();
   }
 
-  if (loader2.isSupported()) {
-    loader2.init();
-  }
 </script>
 </body>
 </html>

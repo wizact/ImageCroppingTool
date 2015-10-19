@@ -1,6 +1,10 @@
 $border-color: #696969;
 $resize-border-color: rgba(222,60,80,.9);
 
+.btn {
+    width: 64px;
+}
+
 .dropArea {
     .fileDrop { 
         width: 300px;
