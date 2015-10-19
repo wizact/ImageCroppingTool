@@ -364,4 +364,4 @@ var ImagePreview = (function() {
     
     return ImagePreview;
 
-}());
+}()); 
