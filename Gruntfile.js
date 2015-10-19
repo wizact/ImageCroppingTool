@@ -1,7 +1,6 @@
 module.exports = function (grunt) {
     'use strict';
 
-
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -14,6 +13,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-http-server');
+    grunt.loadNpmTasks('grunt-shell');
   
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -178,10 +178,15 @@ module.exports = function (grunt) {
                runInBackground: false,
                openBrowser : false
             }
+        },
+        shell: {
+            mocha: {
+                command: 'mocha'
+            }
         }
     });
 
-    grunt.registerTask('default', ['jslint', 'jshint', 'sass', 'bower:install']);
+    grunt.registerTask('default', ['jslint', 'jshint', 'sass', 'bower:install', 'shell:mocha']);
     grunt.registerTask('build', ['clean:build', 'copy:build', 'processhtml:build', 'uglify:build', 'cssmin:build', 'htmlmin:build', 'clean:temp']);
     
     grunt.registerTask('rebuild', ['default', 'build', 'http-server:build']);
