@@ -1,0 +1,61 @@
+.btn {
+  width: 64px; }
+
+.dropArea .fileDrop {
+  width: 300px;
+  height: 30px;
+  border: 3px #696969 dashed;
+  margin: 5px 2px;
+  border-radius: 5px;
+  padding-top: 10px 0px 10px 0px;
+  position: relative;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden; }
+  .dropArea .fileDrop .imgToResize {
+    cursor: move; }
+  .dropArea .fileDrop .containerToResize {
+    cursor: move;
+    position: absolute;
+    border: 1px #fff dashed; }
+  .dropArea .fileDrop .containerToResize:hover {
+    border: 1px rgba(222, 60, 80, 0.9) dashed; }
+  .dropArea .fileDrop .resize-handle {
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: rgba(222, 60, 80, 0.9);
+    z-index: 999; }
+  .dropArea .fileDrop .resize-handle-nw {
+    top: -5px;
+    left: -5px;
+    cursor: nwse-resize; }
+  .dropArea .fileDrop .resize-handle-sw {
+    bottom: -5px;
+    left: -5px;
+    cursor: nesw-resize; }
+  .dropArea .fileDrop .resize-handle-ne {
+    top: -5px;
+    right: -5px;
+    cursor: nesw-resize; }
+  .dropArea .fileDrop .resize-handle-se {
+    bottom: -5px;
+    right: -5px;
+    cursor: nwse-resize; }
+  .dropArea .fileDrop .viewFinder {
+    border: 1px rgba(222, 60, 80, 0.9) solid;
+    z-index: 99;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    pointer-events: none; }
+.dropArea .fileBrowse {
+  margin: 0px 0px 5px;
+  border: 2px dashed #696969;
+  width: 480px;
+  border-radius: 5px;
+  padding: 1px; }
+
+/*# sourceMappingURL=file.css.map */

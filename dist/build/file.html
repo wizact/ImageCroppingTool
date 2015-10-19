@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><head><title>Sample Image Load</title><link rel="stylesheet" href="assets/css/file.min.css"><style></style></head><body><div class="dropArea"><input type="file" id="file1" class="fileBrowse"><br><div id="drop_file1" class="fileDrop"></div><br></div><button id="drawOnCanvas" class="btn">Crop</button> Background Color: <input id="background-color" type="color"><hr><script src="assets/js/imagebundle.min.js"></script><script>var preview1 = new ImagePreview('drop_file1', 'drawOnCanvas', 'background-color', { "width": "480" , "height": "200", "previewWidth": "240" , "previewHeight": "100", "viewFinderWidth": "200", "viewFinderHeight": "100" });
+
+  var loadcb1 = function(result) {
+    preview1.load(result);
+  };
+
+ var loader1 = new ImageLoader('file1', 'drop_file1', loadcb1, { "height": "200", "width": "480" });
+
+  if (loader1.isSupported()) {
+    loader1.init();
+  }</script></body></html>
