@@ -7,6 +7,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
   
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -32,6 +34,7 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
+            ignores: [],
             files: ['assets/js/*.js'],
             options: {
                 jshintrc: true
@@ -63,10 +66,36 @@ module.exports = function (grunt) {
                     layout: 'byType'
                 }
             }
+        },
+        uglify: {
+            options: {
+           banner: 
+                '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                '<%= grunt.template.today("yyyy-mm-dd") %> */ \r'
+            },
+            my_target: {
+                files: {
+                    'dist/assets/js/imagebundle.min.js': [
+                        'assets/js/imageLoader.js',
+                        'assets/js/imagePreview.js'
+                    ]
+                }
+            }
+        },
+        cssmin: {
+          target: {
+            files: [{
+              expand: true,
+              cwd: 'assets/css',
+              src: ['*.css', '!*.min.css'],
+              dest: 'dist/assets/css',
+              ext: '.min.css'
+            }]
+          }
         }
     });
 
-    grunt.registerTask('default', ['jslint', 'jshint', 'sass', 'bower:install']);
+    grunt.registerTask('default', ['jslint', 'jshint', 'sass', 'bower:install', 'uglify', 'cssmin']);
 
     grunt.event.on('watch', function(action, filepath) {
         //grunt.log.write(filepath);
