@@ -65,10 +65,12 @@ var options = {
                 "viewFinderHeight": "100" 
               };    
 
-var preview = new ImagePreview('preview zone Id', options);
+var preview = new ImagePreview('preview zone Id', 'crop buttun Id', 'background color input Id', options);
 ```
 ####Arguments
 - preview zone Id: The Id of div to be used as preview zone. It can be the same as drop zone in Id of Image Loader
 - width, height: The dimension for the preview zone Id. Default (300x30) 
 - previewWidth, previewHeight: Resizing the image to this dimension for initial preview. Default (300x30)
 - viewFinderWidth, viewFinderHeight: The dimension of view finder element works as the guide for the user. Default is half of width and height.
+- crop buttun Id: The Id of the button that triggers the crop functionality
+- background color input Id: The Id of the input for the background color or cropped image
