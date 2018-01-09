@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/wizact/htmllibs.svg?branch=master)](https://travis-ci.org/wizact/htmllibs)
+[![Build Status](https://travis-ci.org/wizact/ImageCroppingTool.svg?branch=master)](https://travis-ci.org/wizact/ImageCroppingTool)
 
 # ImageCropping Tool
 Using HTML5 Canvas and JavaScript to load and crop images.
