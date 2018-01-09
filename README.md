@@ -1,13 +1,13 @@
 
 [![Build Status](https://travis-ci.org/wizact/htmllibs.svg?branch=master)](https://travis-ci.org/wizact/htmllibs)
 
-# htmllibs
-Using HTML5 and JavaScript to build widgets.
+# ImageCropping Tool
+Using HTML5 Canvas and JavaScript to load and crop images.
 
-##File
+## File
 Using FileReader API and Canvas API to create a simple image editing tool with resize and crop functionality.
 
-###Image Loader
+### Image Loader
 Image loader is using window file API as well as traditional html File input to import an image.
 
 Usage:
@@ -27,7 +27,7 @@ if (loader.isSupported()) {
 }
 ```
 
-####Arguments
+#### Arguments
 - file input Id: The Id of Html input with type set to File                      
 - drop zone Id : The Id of Div acts as drop zone (Drag and Drop file here)     
 - loadcallback     : Callback to be called after the file reader loads image data. This can be set to load method of image preview object:
@@ -42,7 +42,7 @@ See Image Preview for more information.
 
 
 
-###Image Preview
+### Image Preview
 Preview the image data and adds crop and resize functionality.
 
 Usage:
@@ -67,7 +67,7 @@ var options = {
 
 var preview = new ImagePreview('preview zone Id', 'crop buttun Id', 'background color input Id', options);
 ```
-####Arguments
+#### Arguments
 - preview zone Id: The Id of div to be used as preview zone. It can be the same as drop zone in Id of Image Loader
 - width, height: The dimension for the preview zone Id. Default (300x30) 
 - previewWidth, previewHeight: Resizing the image to this dimension for initial preview. Default (300x30)
